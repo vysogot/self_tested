@@ -1,33 +1,17 @@
-class Store
-  attr_accessor :feelings
+require_relative 'app'
 
-  def initialize
-    @feelings = []
-  end
-end
-
-def app(store)
-  print 'Rate how you feel from 1 to 10: '
-  rate = $stdin.gets.chomp
-
-  print 'Write a note if you want: '
-  note = $stdin.gets.chomp
-
-  store.feelings << { rate: rate, note: note }
-end
-
-def test(store)
+def test(app)
   rate = '5'
   note = 'What a day!'
 
   $stdin = StringIO.new("#{rate}\n#{note}\n")
   $stdout = StringIO.new
 
-  app(store)
+  app.run
 
   $stdout = STDOUT
 
-  feeling = store.feelings.first
+  feeling = app.store.feelings.first
   if feeling && feeling[:rate] == rate && feeling[:note] == note
     "\e[#{32}mTest passed!\e[0m"
   else
@@ -35,5 +19,5 @@ def test(store)
   end
 end
 
-store = Store.new
-puts test(store)
+app = App.new
+puts test app
