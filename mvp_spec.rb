@@ -14,7 +14,8 @@ class MVPSpec
     1. MVP (Minimum Viable Product):
       * Get input from user on how they feel:
         - #{they_are_asked_how_they_feel}
-    #{it_gets_input_on_how_the_user_feels}
+        - #{the_gradation_is_from_1_to_10}
+        - #{they_are_welcome_to_leave_optional_note}
     END
 
     print the_spec
@@ -24,7 +25,8 @@ class MVPSpec
     spec = 'When they run the program they should be asked ' \
       'to rate their feeling'
 
-    expected_prompt = 'Rate how you feel from 1 to 10: Write a note if you want: '
+    expected_prompt = 'Rate how you feel from 1 to 10: ' \
+      'Write a note if you want: '
 
     prompt = catch_output do
       mock_input("\n\n") do
@@ -39,11 +41,26 @@ class MVPSpec
     end
   end
 
-  def it_gets_input_on_how_the_user_feels
-    spec =<<-END
-    - The gradation is from 1 to 10
-    - Each time they are welcome to leave an optional note
-    END
+  def the_gradation_is_from_1_to_10
+    spec = 'The gradation is from 1 to 10'
+
+    rate = '1'
+
+    mock_input("#{rate}\n\n") do
+      app.run
+    end
+
+    # TODO: teardown!
+    feeling = app.store.feelings.last
+    if feeling && feeling[:rate] == rate
+      "\e[#{32}m#{spec}\e[0m"
+    else
+      "\e[#{31}m#{spec}\e[0m"
+    end
+  end
+
+  def they_are_welcome_to_leave_optional_note
+    spec = 'Each time they are welcome to leave an optional note'
 
     rate = '5'
     note = 'What a day!'
