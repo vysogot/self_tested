@@ -4,4 +4,8 @@ class Store
   def initialize
     @feelings = []
   end
+
+  def clear!
+    @feelings.clear
+  end
 end

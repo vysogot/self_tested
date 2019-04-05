@@ -21,7 +21,15 @@ class MVPSpec
     print the_spec
   end
 
+  private
+
+  def teardown!
+    app.store.clear!
+  end
+
   def they_are_asked_how_they_feel
+    teardown!
+
     spec = 'When they run the program they should be asked ' \
       'to rate their feeling'
 
@@ -42,6 +50,8 @@ class MVPSpec
   end
 
   def the_gradation_is_from_1_to_10
+    teardown!
+
     spec = 'The gradation is from 1 to 10'
 
     rate = '1'
@@ -50,8 +60,7 @@ class MVPSpec
       app.run
     end
 
-    # TODO: teardown!
-    feeling = app.store.feelings.last
+    feeling = app.store.feelings.first
     if feeling && feeling[:rate] == rate
       "\e[#{32}m#{spec}\e[0m"
     else
@@ -60,6 +69,8 @@ class MVPSpec
   end
 
   def they_are_welcome_to_leave_optional_note
+    teardown!
+
     spec = 'Each time they are welcome to leave an optional note'
 
     rate = '5'
@@ -71,8 +82,7 @@ class MVPSpec
       end
     end
 
-    # TODO: teardown!
-    feeling = app.store.feelings.last
+    feeling = app.store.feelings.first
     if feeling && feeling[:rate] == rate && feeling[:note] == note
       "\e[#{32}m#{spec}\e[0m"
     else
