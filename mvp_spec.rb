@@ -1,6 +1,8 @@
-require_relative 'serial_output_catcher'
+require_relative 'serial_output_catch'
 
 class MVPSpec
+  include SerialOutputCatch
+
   attr_reader :app
 
   def initialize(app)
@@ -23,13 +25,12 @@ class MVPSpec
       'to rate their feeling'
 
     expected_prompt = 'Rate how you feel from 1 to 10: Write a note if you want: '
-    $stdin = StringIO.new("\n\n")
-    $stdout = StringIO.new
 
-    app.run
-
-    prompt = $stdout.string
-    $stdout = STDOUT
+    prompt = catch_output do
+      mock_input("\n\n") do
+        app.run
+      end
+    end
 
     if expected_prompt == prompt
       "\e[#{32}m#{spec}\e[0m"
@@ -47,12 +48,11 @@ class MVPSpec
     rate = '5'
     note = 'What a day!'
 
-    $stdin = StringIO.new("#{rate}\n#{note}\n")
-    $stdout = StringIO.new
-
-    app.run
-
-    $stdout = STDOUT
+    prompt = catch_output do
+      mock_input("#{rate}\n#{note}\n") do
+        app.run
+      end
+    end
 
     # TODO: teardown!
     feeling = app.store.feelings.last
