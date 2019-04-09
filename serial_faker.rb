@@ -1,4 +1,4 @@
-module SerialOutputCatch
+module SerialFaker
   def catch_output(&block)
     default_serial_output = $stdout
 
