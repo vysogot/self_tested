@@ -1,4 +1,14 @@
-module SpecHelper
+require_relative 'serial_faker'
+
+class BaseSpec
+  include SerialFaker
+
+  attr_reader :app
+
+  def initialize(app)
+    @app = app
+  end
+
   def teardown!
     app.store.clear!
   end

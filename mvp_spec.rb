@@ -1,16 +1,6 @@
-require_relative 'spec_helper'
-require_relative 'serial_faker'
+require_relative 'base_spec'
 
-class MVPSpec
-  include SpecHelper
-  include SerialFaker
-
-  attr_reader :app
-
-  def initialize(app)
-    @app = app
-  end
-
+class MVPSpec < BaseSpec
   def run
     the_spec =<<~END
     1. MVP (Minimum Viable Product):
