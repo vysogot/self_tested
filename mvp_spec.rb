@@ -5,9 +5,9 @@ class MVPSpec < BaseSpec
     the_spec =<<~END
     1. MVP (Minimum Viable Product):
       * Get input from user on how they feel:
-        - #{teardown!; they_are_asked_how_they_feel}
-        - #{teardown!; the_gradation_is_from_1_to_10}
-        - #{teardown!; they_are_welcome_to_leave_optional_note}
+        - #{they_are_asked_how_they_feel}
+        - #{the_gradation_is_from_1_to_10}
+        - #{they_are_welcome_to_leave_optional_note}
     END
 
     print the_spec
@@ -16,6 +16,8 @@ class MVPSpec < BaseSpec
   private
 
   def they_are_asked_how_they_feel
+    teardown!
+
     spec = 'When they run the program they should be asked ' \
       'to rate their feeling'
     expected_prompt = 'Rate how you feel from 1 to 10: ' \
@@ -31,6 +33,8 @@ class MVPSpec < BaseSpec
   end
 
   def the_gradation_is_from_1_to_10
+    teardown!
+
     spec = 'The gradation is from 1 to 10'
     expected_rate = '1'
 
@@ -43,6 +47,8 @@ class MVPSpec < BaseSpec
   end
 
   def they_are_welcome_to_leave_optional_note
+    teardown!
+
     spec = 'Each time they are welcome to leave an optional note'
     expected_note = 'What a day!'
 
