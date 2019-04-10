@@ -1,4 +1,4 @@
-class Store
+class FakeStore
   attr_accessor :feelings
 
   def initialize

@@ -1,11 +1,12 @@
-require_relative 'base_spec'
-require_relative 'mvp_specs'
+require_relative '../base_spec_runner'
+require_relative 'spec_suite'
 
-class MVPSpec < BaseSpec
-  include MVPSpecs
+module MVP
+  class SpecRunner < BaseSpecRunner
+    include SpecSuite
 
-  def run
-    the_spec =<<~END
+    def call
+      the_spec =<<~END
     1. MVP (Minimum Viable Product):
       * Get input from user on how they feel:
         - #{they_are_asked_how_they_feel}
@@ -14,8 +15,9 @@ class MVPSpec < BaseSpec
       * Give stats to the user:
         - #{they_can_see_their_feelings_stats}
         - #{they_can_get_daily_weekly_and_monthly_histograms}
-    END
+      END
 
-    print the_spec
+      print the_spec
+    end
   end
 end

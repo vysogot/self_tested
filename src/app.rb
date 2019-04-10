@@ -1,10 +1,8 @@
-require_relative 'store'
-
 class App
   attr_reader :store
 
-  def initialize
-    @store = Store.new
+  def initialize(store)
+    @store = store
   end
 
   def run
