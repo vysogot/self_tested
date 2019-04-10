@@ -14,3 +14,7 @@
      - The MVP can run in the console only
    * Architecture:
      - It should be easy to port it later to the web or mobile
+
+#### Contributors
+
+<a href="https://github.com/michaldarda">michaldarda</a>
