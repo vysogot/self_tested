@@ -22,4 +22,8 @@ module SerialFaker
   ensure
     $stdin = default_serial_input
   end
+
+  def self.included(klass)
+    klass.extend self
+  end
 end

@@ -9,8 +9,15 @@ class BaseSpecRunner
     @app = app
   end
 
-  def run
-    raise "Implement this method"
+  def self.it(description, &block)
+    define_method(description.tr(' ', '_')) do
+      teardown!
+      instance_eval(&block)
+    end
+  end
+
+  def call
+    raise "Implement this method in child"
   end
 
   def teardown!
