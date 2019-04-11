@@ -65,7 +65,9 @@ class BaseSpecRunner
             else
               33 # yellow
             end
-    puts nest + "  - \e[#{color}m#{spec.name}\e[0m"
+
+    fail_message = @fail || ''
+    puts nest + "  - \e[#{color}m#{spec.name}\e[0m" + fail_message
   end
 
   def print_group(group)
@@ -78,7 +80,12 @@ class BaseSpecRunner
   end
 
   def expect(received_value, expected_value)
-    expected_value == received_value
+    if expected_value == received_value
+      true
+    else
+      @fail = "\nFAIL: Expected '#{expected_value}', got '#{received_value}'"
+      false
+    end
   end
 end
 

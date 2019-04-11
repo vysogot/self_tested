@@ -46,10 +46,17 @@ module MVP
 
       context '* Give stats to the user:' do
         it 'Every time the user wants he or she can see the feeling stats' do
+          received_output = catch_output do
+            mock_input("stats\n") do
+              app.run
+            end
+          end
+
+          expected_output = received_output.split(': ').last
+          expect('Here are the stats', expected_output)
         end
 
         it 'Daily, weekly and monthly histograms should be available' do
-          expect(0, 1)
         end
       end
     end
