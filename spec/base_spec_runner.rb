@@ -21,16 +21,17 @@ class BaseSpecRunner
       nest = "  " * example_group[:nest]
       puts nest + example_group[:name]
       example_group[:specs].each do |spec|
-        color = case send(spec[:method])
-        when false
-          31 # red
-        when true
-          32 # green
-        else
-          33 # yellow
-        end
+        spec_result = send(spec.method)
+        color = case spec_result
+                when false
+                  31 # red
+                when true
+                  32 # green
+                else
+                  33 # yellow
+                end
 
-        puts nest + "  - \e[#{color}m#{spec[:name]}\e[0m"
+        puts nest + "  - \e[#{color}m#{spec.name}\e[0m"
       end
     end
   end
@@ -47,13 +48,13 @@ class BaseSpecRunner
   end
 
   def self.it(description, &block)
-    @@suite.last[:specs] << {
+    @@suite.last[:specs] << Spec.new(
       name: description,
       method: define_method(description.tr(' ', '_')) do
         teardown!
         instance_eval(&block)
       end,
-    }
+    )
   end
 
   def teardown!
@@ -63,4 +64,14 @@ class BaseSpecRunner
   def expect(received_value, expected_value)
     expected_value == received_value
   end
+
+  class Spec
+    attr_reader :name, :method
+
+    def initialize(name:, method:)
+      @name = name
+      @method = method
+    end
+  end
 end
+
