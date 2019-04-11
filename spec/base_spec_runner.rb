@@ -19,7 +19,6 @@ class BaseSpecRunner
   end
 
   class << self
-    attr_reader :suite
 
     @@suite = []
     @@nest = 0
@@ -44,20 +43,20 @@ class BaseSpecRunner
   end
 
   def call
-    @@suite.each do |example_group|
-      nest = "  " * example_group[:nest]
-      puts nest + example_group[:name]
-      example_group[:specs].each do |spec|
+    @@suite.each do |group|
+      print_group(group)
+      group[:specs].each do |spec|
         teardown!
         result = send(spec.method)
-        print_spec(nest, spec.name, result)
+        print_spec(group, spec, result)
       end
     end
   end
 
   private
 
-  def print_spec(nest, name, result)
+  def print_spec(group, spec, result)
+    nest = "  " * group[:nest]
     color = case result
             when false
               31 # red
@@ -66,7 +65,12 @@ class BaseSpecRunner
             else
               33 # yellow
             end
-    puts nest + "  - \e[#{color}m#{name}\e[0m"
+    puts nest + "  - \e[#{color}m#{spec.name}\e[0m"
+  end
+
+  def print_group(group)
+    nest = "  " * group[:nest]
+    puts nest + group[:name]
   end
 
   def teardown!
