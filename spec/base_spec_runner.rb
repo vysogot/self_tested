@@ -9,6 +9,7 @@ class BaseSpecRunner
     attr_reader :suite
 
     @@suite = []
+    @@nest = 0
   end
 
   def initialize(app)
@@ -16,9 +17,8 @@ class BaseSpecRunner
   end
 
   def call
-    nest = ''
-
     @@suite.each do |example_group|
+      nest = "  " * example_group[:nest]
       puts nest + example_group[:name]
       example_group[:specs].each do |spec|
         if send(spec[:method]) == true
@@ -27,13 +27,14 @@ class BaseSpecRunner
           puts nest + "  - \e[#{31}m#{spec[:name]}\e[0m"
         end
       end
-      nest += "  "
     end
   end
 
   def self.context(description, &block)
-    @@suite << { name: description, specs: [] }
+    @@suite << { name: description, specs: [], nest: @@nest }
+    @@nest += 1
     instance_eval(&block)
+    @@nest -= 1
   end
 
   class << self
