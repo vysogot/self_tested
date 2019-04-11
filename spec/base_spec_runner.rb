@@ -21,11 +21,16 @@ class BaseSpecRunner
       nest = "  " * example_group[:nest]
       puts nest + example_group[:name]
       example_group[:specs].each do |spec|
-        if send(spec[:method]) == true
-          puts nest + "  - \e[#{32}m#{spec[:name]}\e[0m"
+        color = case send(spec[:method])
+        when false
+          31 # red
+        when true
+          32 # green
         else
-          puts nest + "  - \e[#{31}m#{spec[:name]}\e[0m"
+          33 # yellow
         end
+
+        puts nest + "  - \e[#{color}m#{spec[:name]}\e[0m"
       end
     end
   end

@@ -46,7 +46,6 @@ module MVP
 
       context '* Give stats to the user:' do
         it 'Every time the user wants he or she can see the feeling stats' do
-          expect(0, 1)
         end
 
         it 'Daily, weekly and monthly histograms should be available' do
